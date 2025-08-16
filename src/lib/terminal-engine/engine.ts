@@ -1,13 +1,14 @@
 // src/lib/engine.ts
+import type { Line } from "../model/line";
 
 export type Command = {
   description: string;
-  run: (args: string[], ctx: GameContext) => string[] | Promise<string[]>;
+  run: (args: string[], ctx: GameContext) => Line[] | Promise<Line[]>;
 };
 
 export type GameContext = {
   state: Record<string, any>;
-  print: (msg: string | string[]) => void;
+  print: (msg: Line | Line[]) => void;
   clear: () => void;
 };
 
@@ -54,7 +55,7 @@ export function createEngine(options: GameOptions) {
 
   const state = { ...(options.state || {}), _commands: mergedCommands };
 
-  let buffer: string[] = [];
+  let buffer: Line[] = [];
 
   const context: GameContext = {
     state,
@@ -68,7 +69,7 @@ export function createEngine(options: GameOptions) {
   };
 
   return {
-    run: async (input: string): Promise<string[]> => {
+    run: async (input: string): Promise<Line[]> => {
       buffer = [];
 
       const [cmdName, ...args] = input.trim().split(" ");
@@ -80,7 +81,7 @@ export function createEngine(options: GameOptions) {
         );
       } else {
         const output = await cmd.run(args, context);
-        if (output) context.print(output);
+        if (output) context.print(output); // <-- FIXED: keep delay objects!
       }
 
       return buffer;
