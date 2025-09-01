@@ -130,11 +130,21 @@
     // Example: YYYY-MM-DD HH:mm:ss
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
   }
+
+  function isAsciiArt(line: string) {
+    // Simple heuristic: if line contains lots of \ or / or _ or |, treat as art
+    return typeof line === "string" && /[\\/_|]{3,}/.test(line);
+  }
 </script>
 
 <div class="terminal" bind:this={terminalEl} on:click={focusInputIfAllowed}>
+  <!-- Render lines -->
   {#each lines as line}
-    <div class="line">{line}</div>
+    {#if isAsciiArt(line)}
+      <pre class="ascii-art">{line}</pre>
+    {:else}
+      <div>{line}</div>
+    {/if}
   {/each}
 
   {#if footer}
@@ -190,5 +200,20 @@
     color: #0f0;
     font-family: monospace;
     margin-top: 1ch;
+  }
+  .ascii-art {
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+    font-size: 1em;
+    line-height: 1.05; /* Reduce line height for tighter spacing */
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    background: none;
+    border: none;
+  }
+  /* Optionally, for all lines */
+  .terminal div, .terminal pre {
+    margin: 0;
+    padding: 0;
   }
 </style>
