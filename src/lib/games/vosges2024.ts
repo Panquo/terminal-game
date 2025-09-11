@@ -58,42 +58,78 @@ export function getVosges2024Context() {
       ],
       validate: (input: string) => {
         const num = parseInt(input.trim(), 10);
-        return !isNaN(num) && num >= 1 && num <= 4; // 4 choices in this example
+        return !isNaN(num) && num != 2 && num >= 1 && num <= 4; // 4 choices in this example
       },
       storeResult: (input: string, ctx: any) => {
         const idx = parseInt(input.trim()) - 1;
-
         ctx.state.selectedName = steps[0].choices[idx];
         // Set the question set for the selected name
-        ctx.state.steps = questionSets[ctx.state.selectedName] || defaultSteps;
-        console.log(`You selected: ${ctx.state.steps[0].question}`);
+        ctx.state.steps =
+          questionSets[ctx.state.selectedName.toLocaleLowerCase()] ||
+          defaultSteps;
       },
       errorMessage: (input: string) => {
         const idx = parseInt(input.trim()) - 1;
-
         if (idx === 1) {
           return ["haha. Well tried, but you are not Merlinou."];
         }
         return ["Incorrect. Try again."];
       },
+      result: [
+        { text: "Identification...", delay: 300 },
+        { text: "Individu validé.", delay: 100 },
+      ],
     },
   ];
 
   const defaultSteps = [];
 
   const questionSets: Record<string, any[]> = {
-    Jesus: [
+    jesus: [
       {
-        question: "Qui est 'Le Ronfleur' ?",
+        question: [
+          { text: "Démarrage de la récupération :", delay: 0 },
+          { text: "Partition 1/5", delay: 600 },
+          { text: "Recherche des autre participants...", delay: 1200 },
+          {
+            text: "Anomalie détectée: terme 'LE RONFLEUR' rencontré",
+            delay: 200,
+            status: Status.WARN,
+          },
+          {
+            text: "Association incomplète - assistance requise",
+            delay: 200,
+            status: Status.WARN,
+          },
+          {
+            text: "Partition 1 : Identifiez la personne associée à 'LE RONFLEUR'.",
+          },
+        ],
         validate: (input: string) =>
           ["yanou", "yann", "yannou", "le ronfleur"].includes(
             input.trim().toLocaleLowerCase()
           ),
+        result: [
+          { text: "Association correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 1 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Parmis les ingrédients suivants, lequel permet de tout sublimer, selon LE PUANT ?", //TODO: use caps for names for consistency
-        choices: ["la bière", "le parmesan", "la glace vanille", "le houmous"],
+        question: [
+          { text: "Partition 2/5", delay: 200 },
+          {
+            text: "Recherche d'ingrédient de sublimation optimal...",
+            delay: 600,
+          },
+          { text: "Avis objectif de 'LE PUANT'.", delay: 300 },
+          {
+            text: "Identification de l'élément nécessaire :",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
+        choices: ["Bière", "Parmesan", "Glace saveur - vanille -", "Houmous"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num == 2;
@@ -101,14 +137,34 @@ export function getVosges2024Context() {
         errorMessage: (input: string) => {
           return ["Incorrect. Try again. HAHA!"];
         },
+        result: [
+          {
+            text: "Sublimation réussie. Ingrédient optimal correct.",
+            delay: 500,
+          },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 2 terminée.", delay: 500 },
+        ],
       },
       {
-        question: "Quel animal avez-vous pu observer autour du lac ?",
+        question: [
+          { text: "Partition 3/5", delay: 200 },
+          {
+            text: "Analyse de la faune locale autour du lac...",
+            delay: 600,
+          },
+          {
+            text: "Identification de l'animal observé nécessaire pour validation mémoire.",
+            delay: 300,
+            status: Status.WARN,
+          },
+        ],
         choices: [
-          "Des Turducken",
+          "Imbrication Turducken",
           "Une Silure de 2,6m",
           "DES CANARDS",
           "COIN~han~",
+          "AP",
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
@@ -137,9 +193,33 @@ export function getVosges2024Context() {
           }
           return ["Incorrect. Try again. HAHA!"];
         },
+        result: [
+          {
+            text: "Observation terminée. Animal identifié.",
+            delay: 500,
+          },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 3 terminée.", delay: 500 },
+        ],
       },
       {
-        question: "Qui est le meilleur Guesser de l'AsperGuessr ?",
+        question: [
+          { text: "Partition 4/5", delay: 200 },
+          {
+            text: "Inspection du module AsperGuessr...",
+            delay: 600,
+          },
+          {
+            text: "Identification du meilleur Guesser impossible.",
+            delay: 600,
+            status: Status.WARN,
+          },
+          {
+            text: "Assistance nécessaire :",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
         validate: (input: string) =>
           ["hanna", "anna", "hhanna", "hhhanna"].includes(
             input.trim().toLowerCase()
@@ -161,10 +241,35 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Identification correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 4 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Quel son de QUALITÉ a été ajouté discrètement à la JAM d'Europa Park ?",
+        question: [
+          { text: "Partition 5/5", delay: 200 },
+          {
+            text: "Sujet : 'Escapade à EuropaPark'.",
+            delay: 100,
+          },
+          {
+            text: "Detection d'une JAM. Analyse de la playlist musicale...",
+            delay: 600,
+          },
+          {
+            text: "Ajout anormal détecté.",
+            delay: 200,
+            status: Status.WARN,
+          },
+          { text: "Fichier corrompu !", delay: 300, status: Status.ERROR },
+          {
+            text: "Suggestion de correspondance :",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
         choices: [
           "Alarme Incendie Remix b00m bOOM || a + ib",
           "Le sanglier - DaPoule",
@@ -184,11 +289,59 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Correction appliquée. Fichier restauré.", delay: 500 },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 5 terminée.", delay: 500 },
+        ],
       },
     ],
-    Yanou: [
+    yanou: [
       {
-        question: "Que n'y avait-il pas dans la salle de jeux ?",
+        question: [
+          { text: "Démarrage de la récupération :", delay: 0 },
+          { text: "Partition 1/5", delay: 600 },
+          { text: "Recherche des autre participants...", delay: 1200 },
+          {
+            text: "Anomalie détectée: terme 'LE PUANT' rencontré",
+            delay: 200,
+            status: Status.WARN,
+          },
+          {
+            text: "Association incomplète - assistance requise",
+            delay: 200,
+            status: Status.WARN,
+          },
+          {
+            text: "Partition 1 : Identifiez la personne associée à 'LE RONFLEUR'.",
+          },
+        ],
+        validate: (input: string) =>
+          ["louen", "le puant"].includes(input.trim().toLocaleLowerCase()),
+        result: [
+          { text: "Association correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 1 terminée.", delay: 500 },
+        ],
+      },
+      {
+        question: [
+          { text: "Partition 2/5", delay: 200 },
+          {
+            text: "Exploration de la salle de jeux...",
+            delay: 1200,
+          },
+          {
+            text: "Intrusion détectée : élément excedentaire détecté.",
+            delay: 300,
+            status: Status.ERROR,
+          },
+          {
+            text: "Assistance requise pour identification de l'intrus.",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
         choices: [
           "Un billard",
           "Un baby-foot",
@@ -232,11 +385,7 @@ export function getVosges2024Context() {
           ];
         },
       },
-      {
-        question: "Qui est 'Le Puant' ?",
-        validate: (input: string) =>
-          ["louen", "le puant"].includes(input.trim().toLocaleLowerCase()),
-      },
+
       {
         question:
           "Qui parmis nous s'est fait attraper la veste par les voisins chiant day 1 ?",
@@ -292,7 +441,7 @@ export function getVosges2024Context() {
         },
       },
     ],
-    MAC: [
+    mac: [
       {
         question:
           "Où avait été subtilement placé l'apéro, après que ces cons de JESUS et MERLINOU ne l'ai perdu ?",
@@ -347,7 +496,7 @@ export function getVosges2024Context() {
         },
       },
     ],
-    Louen: [
+    louen: [
       {
         question: "Qui est 'Le Ronfleur' ?",
         validate: (input: string) =>
@@ -450,7 +599,7 @@ export function getVosges2024Context() {
           ),
       },
     ],
-    Blini: [
+    blini: [
       {
         question: "Quel animal avez-vous pu observer autour du lac ?",
         choices: [
@@ -554,7 +703,7 @@ export function getVosges2024Context() {
         },
       },
     ],
-    AP: [
+    ap: [
       {
         question: "Quel animal avez-vous pu observer autour du lac ?",
         choices: [
@@ -635,7 +784,7 @@ export function getVosges2024Context() {
         },
       },
     ],
-    TOMA: [
+    thomas: [
       {
         question: "De qui a t'on souhaité l'anniversaire pendant le séjour ?",
         validate: (input: string) =>
@@ -695,35 +844,6 @@ export function getVosges2024Context() {
 
   // Recovery-style mapping for questionSets questions
   const recoveryQuestionsMapping = {
-    Jesus: [
-      {
-        original: "Qui est 'Le Ronfleur' ?",
-        recovery:
-          "Partition 1 : Anomalie détectée - le terme 'Le Ronfleur' a été rencontré. Assistance utilisateur requise : identifier la personne associée.",
-      },
-      {
-        original:
-          "Parmis les ingrédients suivants, lequel permet de tout sublimer, selon LE PUANT ?",
-        recovery:
-          "Partition 2 : Recherche d'ingrédient optimal selon 'LE PUANT'. Veuillez sélectionner l'élément correct pour la sublimation.",
-      },
-      {
-        original: "Quel animal avez-vous pu observer autour du lac ?",
-        recovery:
-          "Partition 3 : Analyse de la faune locale autour du lac. Veuillez indiquer l'animal observé pour validation mémoire.",
-      },
-      {
-        original: "Qui est le meilleur Guesser de l'AsperGuessr ?",
-        recovery:
-          "Partition 4 : Identification du meilleur Guesser dans le module AsperGuessr. Assistance utilisateur requise : fournir le nom correct.",
-      },
-      {
-        original:
-          "Quel son de QUALITÉ a été ajouté discrètement à la JAM d'Europa Park ?",
-        recovery:
-          "Partition 5 : Détection d'ajout sonore dans la JAM d'Europa Park. Veuillez sélectionner le son de qualité ajouté.",
-      },
-    ],
     Yanou: [
       {
         original: "Que n'y avait-il pas dans la salle de jeux ?",
@@ -990,12 +1110,17 @@ export function getVosges2024Context() {
       ) {
         // Validate and store the selected name
         if (step.validate(userAnswer)) {
+          console.log("Selected name:", step);
+
           if (step.storeResult) step.storeResult(userAnswer, ctx);
           ctx.state.steps =
-            questionSets[ctx.state.selectedName] || defaultSteps;
+            questionSets[ctx.state.selectedName.toLocaleLowerCase()] ||
+            defaultSteps;
           ctx.state.name = ctx.state.selectedName;
           ctx.state.step = 0; // Start at the first question of the selected set
           ctx.state.awaitingAnswer = true;
+          console.log("Assigned steps:", ctx.state.steps);
+
           return [
             `Bienvenue ${ctx.state.name}!`,
             ...getQuestionLines(ctx.state.steps[ctx.state.step]),
@@ -1017,12 +1142,18 @@ export function getVosges2024Context() {
 
       if (step.validate(userAnswer)) {
         if (step.storeResult) step.storeResult(userAnswer, ctx);
+        // Show result if present
+        let resultMsg = step.result
+          ? Array.isArray(step.result)
+            ? step.result
+            : [step.result]
+          : ["Correct!"];
         ctx.state.step++;
         ctx.state.awaitingAnswer = ctx.state.step < activeSteps.length;
 
         if (ctx.state.step < activeSteps.length) {
           return [
-            "Correct!",
+            ...resultMsg,
             ...getQuestionLines(activeSteps[ctx.state.step]),
             "Type your answer:",
           ];
@@ -1031,7 +1162,7 @@ export function getVosges2024Context() {
           if (ctx.state.favoriteColor) {
             endMsg += ` Your favorite color was: ${ctx.state.favoriteColor}.`;
           }
-          return ["Correct!", endMsg, ...outro];
+          return [...resultMsg, endMsg, ...outro];
         }
       } else {
         if (step.errorMessage) {

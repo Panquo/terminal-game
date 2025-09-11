@@ -143,7 +143,7 @@
     {#if isAsciiArt(line)}
       <pre class="ascii-art">{line}</pre>
     {:else}
-      <div>{line}</div>
+      <div class="line">{line}</div>
     {/if}
   {/each}
 
@@ -175,7 +175,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    .line{
+    .line {
       text-align: left;
     }
   }
@@ -202,7 +202,7 @@
     margin-top: 1ch;
   }
   .ascii-art {
-    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+    font-family: "Fira Mono", "Consolas", "Menlo", "Monaco", monospace;
     font-size: 1em;
     line-height: 1.05; /* Reduce line height for tighter spacing */
     margin: 0;
@@ -212,7 +212,8 @@
     border: none;
   }
   /* Optionally, for all lines */
-  .terminal div, .terminal pre {
+  .terminal div,
+  .terminal pre {
     margin: 0;
     padding: 0;
   }
