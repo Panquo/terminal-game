@@ -313,7 +313,7 @@ export function getVosges2024Context() {
             status: Status.WARN,
           },
           {
-            text: "Partition 1 : Identifiez la personne associée à 'LE RONFLEUR'.",
+            text: "Partition 1 : Identifiez la personne associée à 'LE PUANT'.",
           },
         ],
         validate: (input: string) =>
@@ -387,9 +387,44 @@ export function getVosges2024Context() {
       },
 
       {
-        question:
-          "Qui parmis nous s'est fait attraper la veste par les voisins chiant day 1 ?",
-        choices: ["Jesus", "Yanou", "Louen", "MAC", "TOMA"],
+        question: [
+          { text: "Partition 3/5", delay: 200 },
+          {
+            text: "Ecoute des enregistrements audio...",
+            delay: 1200,
+          },
+          {
+            text: "Incident détécté.",
+            delay: 300,
+            status: Status.ERROR,
+          },
+          {
+            text: "Date: DAY 1",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Cause: Bruits et rires élevés.",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Conséquence: veste attrapée par voisins.",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Concerné: ~#@!$%* ",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Impossible de retrouver l'identité complète. Assistance requise.",
+            delay: 100,
+            status: Status.ERROR,
+          },
+        ],
+        choices: ["JESUS", "YANOU", "LOUEN", "MAC", "THOMAS"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 1;
@@ -402,10 +437,35 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Identification correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 3 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Quel son de QUALITÉ a été ajouté discrètement à la JAM d'Europa Park ?",
+        question: [
+          { text: "Partition 4/5", delay: 200 },
+          {
+            text: "Sujet : 'Escapade à EuropaPark'.",
+            delay: 100,
+          },
+          {
+            text: "Detection d'une JAM. Analyse de la playlist musicale...",
+            delay: 600,
+          },
+          {
+            text: "Ajout anormal détecté.",
+            delay: 200,
+            status: Status.WARN,
+          },
+          { text: "Fichier corrompu !", delay: 300, status: Status.ERROR },
+          {
+            text: "Suggestion de correspondance :",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
         choices: [
           "Alarme Incendie Remix b00m bOOM || a + ib",
           "Le sanglier - DaPoule",
@@ -425,41 +485,112 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Correction appliquée. Fichier restauré.", delay: 500 },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 4 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Où avait été subtilement placé l'apéro, après que ces cons de JESUS et MERLINOU ne l'ai perdu ?",
+        question: [
+          { text: "Partition 5/5", delay: 200 },
+          {
+            text: "Incident détecté : Apéro perdu.",
+            delay: 600,
+            status: Status.ERROR,
+          },
+          { text: "Cause : - Inconnu -", delay: 100, status: Status.WARN },
+          {
+            text: "Conséquence : Jeu de piste",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Conclusion de l'incident : Apéro retrouvé ^£$%*-- ",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Impossible de reconstruire la conclusion. Assistance requise.",
+            delay: 100,
+            status: Status.ERROR,
+          },
+        ],
         choices: [
-          "Dans le coffre de la voiture de BLINI",
-          "Dans le coffre de la voiture de YANOU",
-          "Dans ton cul",
-          "Dans le coffre de la voiture de LOUEN",
+          "-- dans le coffre de la voiture de YANOU",
+          "-- dans ton cul",
+          "-- dans le coffre de la voiture de LOUEN",
+          "-- dans le coffre de MAC",
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return !isNaN(num) && num === 4;
+          return !isNaN(num) && num === 3;
         },
+        result: [
+          { text: "Conclusion récupérée. Artefact restauré.", delay: 300 },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 5 terminée.", delay: 500 },
+        ],
       },
     ],
     mac: [
       {
-        question:
-          "Où avait été subtilement placé l'apéro, après que ces cons de JESUS et MERLINOU ne l'ai perdu ?",
+        question: [
+          { text: "Démarrage de la récupération :", delay: 0 },
+          { text: "Partition 1/5", delay: 600 },
+          {
+            text: "Incident détecté : Apéro perdu.",
+            delay: 600,
+            status: Status.ERROR,
+          },
+          { text: "Cause : - Inconnu -", delay: 100, status: Status.WARN },
+          {
+            text: "Conséquence : Jeu de piste",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Conclusion de l'incident : Apéro retrouvé ^£$%*-- ",
+            delay: 100,
+            status: Status.WARN,
+          },
+          {
+            text: "Impossible de reconstruire la conclusion. Assistance requise.",
+            delay: 100,
+            status: Status.ERROR,
+          },
+        ],
         choices: [
-          "Dans le coffre de la voiture de BLINI",
-          "Dans le coffre de la voiture de YANOU",
-          "Dans ton cul",
-          "Dans le coffre de la voiture de LOUEN",
+          "-- dans le coffre de la voiture de YANOU",
+          "-- dans ton cul",
+          "-- dans le coffre de la voiture de LOUEN",
+          "-- dans le coffre de MAC",
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return !isNaN(num) && num === 4;
+          return !isNaN(num) && num === 3;
         },
+        result: [
+          { text: "Conclusion récupérée. Artefact restauré.", delay: 300 },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 1 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Parmis les ingrédients suivants, lequel permet de tout sublimer, selon LE PUANT ?", //TODO: use caps for names for consistency
-        choices: ["la bière", "le parmesan", "la glace vanille", "le houmous"],
+        question: [
+          { text: "Partition 2/5", delay: 200 },
+          {
+            text: "Recherche d'ingrédient de sublimation optimal...",
+            delay: 600,
+          },
+          { text: "Avis objectif de 'LE PUANT'.", delay: 300 },
+          {
+            text: "Identification de l'élément nécessaire :",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
+        choices: ["Bière", "Parmesan", "Glace saveur - vanille -", "Houmous"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num == 2;
@@ -467,19 +598,62 @@ export function getVosges2024Context() {
         errorMessage: (input: string) => {
           return ["Incorrect. Try again. HAHA!"];
         },
+        result: [
+          {
+            text: "Sublimation réussie. Ingrédient optimal correct.",
+            delay: 500,
+          },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 2 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Puisque seul VRAI HOMME sait s'occuper d'un barbeuc, qui en a pris la responsabilité ?",
+        question: [
+          { text: "Partition 3/5", delay: 200 },
+          {
+            text: "Apparté Barbercue",
+            delay: 600,
+          },
+          { text: "Allumage : VRAI HOMME", delay: 100 },
+          {
+            text: "Impossible de d'identifier 'VRAI HOMME'. Assistance requise.",
+            delay: 100,
+            status: Status.ERROR,
+          },
+        ],
         choices: ["Jesus", "Merlinou", "Yanou", "Louen", "AP", "TOMA"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 5;
         },
+        result: [
+          { text: "Identification correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 3 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Parmis les attractions d'Europa Park suivantes, par laquelle avont nous débuté notre journée ?",
+        question: [
+          { text: "Partition 4/5", delay: 200 },
+          {
+            text: "Sujet : 'Escapade à EuropaPark'.",
+            delay: 100,
+          },
+          {
+            text: "Identification des attractions...",
+            delay: 600,
+          },
+          {
+            text: "Entrée non reconnue: Attraction de départ.",
+            delay: 600,
+            status: Status.ERROR,
+          },
+          {
+            text: "Identification requise.",
+            delay: 600,
+            status: Status.ERROR,
+          },
+        ],
         choices: ["Blue Fire", "Silver Star", "Voltron", "Eurosat"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
@@ -494,19 +668,126 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Attraction identifiée. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 4 terminée.", delay: 500 },
+        ],
+      },
+      {
+        question: [
+          { text: "Partition 5/5", delay: 200 },
+          { text: "Entité CDHV identifiée", delay: 100 },
+          { text: "CDHV : Confiserie Des Hautes-Vosges", delay: 200 },
+          { text: "Inspection des achats", delay: 300 },
+          {
+            text: "Anomalie détectée : Achat excessif",
+            delay: 300,
+            status: Status.WARN,
+          },
+          {
+            text: "Assistance requise pour quantification.",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
+        choices: [
+          "moins de 5 deniers",
+          "un smic",
+          "environ deux smics",
+          "entre 5 euros et un smic",
+        ],
+        validate: (input: string) => {
+          const num = parseInt(input.trim(), 10);
+          return !isNaN(num) && num === 4;
+        },
+        errorMessage: (input: string) => {
+          const num = parseInt(input.trim(), 10);
+          if (num === 2) {
+            return [
+              {
+                text: "Abuse...",
+                status: Status.ERROR,
+              },
+            ];
+          } else if (num === 3) {
+            return [
+              {
+                text: "T'es marseillais toi non ? Fratéé",
+                status: Status.ERROR,
+              },
+            ];
+          } else if (num === 1) {
+            return [
+              {
+                text: "TOMA n'est pas aussi radin.",
+                status: Status.WARN,
+              },
+            ];
+          }
+        },
+        result: [
+          {
+            text: "Quantification terminée. Mémoire synchronisée.",
+            delay: 300,
+          },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 5 terminée.", delay: 500 },
+        ],
       },
     ],
     louen: [
       {
-        question: "Qui est 'Le Ronfleur' ?",
+        question: [
+          { text: "Démarrage de la récupération :", delay: 0 },
+          { text: "Partition 1/5", delay: 600 },
+          { text: "Recherche des autre participants...", delay: 1200 },
+          {
+            text: "Anomalie détectée: terme 'LE RONFLEUR' rencontré",
+            delay: 200,
+            status: Status.WARN,
+          },
+          {
+            text: "Association incomplète - assistance requise",
+            delay: 200,
+            status: Status.WARN,
+          },
+          {
+            text: "Partition 1 : Identifiez la personne associée à 'LE RONFLEUR'.",
+          },
+        ],
         validate: (input: string) =>
           ["yanou", "yann", "yannou", "le ronfleur"].includes(
             input.trim().toLocaleLowerCase()
           ),
+        result: [
+          { text: "Association correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 1 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Parmis les attractions d'Europa Park suivantes, par laquelle avont nous débuté notre journée ?",
+        question: [
+          { text: "Partition 2/5", delay: 200 },
+          {
+            text: "Sujet : 'Escapade à EuropaPark'.",
+            delay: 100,
+          },
+          {
+            text: "Identification des attractions...",
+            delay: 600,
+          },
+          {
+            text: "Entrée non reconnue: Attraction de départ.",
+            delay: 600,
+            status: Status.ERROR,
+          },
+          {
+            text: "Identification requise.",
+            delay: 600,
+            status: Status.ERROR,
+          },
+        ],
         choices: ["Blue Fire", "Silver Star", "Voltron", "Eurosat"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
@@ -521,9 +802,30 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Attraction identifiée. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 2 terminée.", delay: 500 },
+        ],
       },
       {
-        question: "Que n'y avait-il pas dans la salle de jeux ?",
+        question: [
+          { text: "Partition 3/5", delay: 200 },
+          {
+            text: "Exploration de la salle de jeux...",
+            delay: 1200,
+          },
+          {
+            text: "Intrusion détectée : élément excedentaire détecté.",
+            delay: 300,
+            status: Status.ERROR,
+          },
+          {
+            text: "Assistance requise pour identification de l'intrus.",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
         choices: [
           "Un billard",
           "Un baby-foot",
@@ -566,10 +868,35 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Identification correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 3 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Quel son de QUALITÉ a été ajouté discrètement à la JAM d'Europa Park ?",
+        question: [
+          { text: "Partition 4/5", delay: 200 },
+          {
+            text: "Sujet : 'Escapade à EuropaPark'.",
+            delay: 100,
+          },
+          {
+            text: "Detection d'une JAM. Analyse de la playlist musicale...",
+            delay: 600,
+          },
+          {
+            text: "Ajout anormal détecté.",
+            delay: 200,
+            status: Status.WARN,
+          },
+          { text: "Fichier corrompu !", delay: 300, status: Status.ERROR },
+          {
+            text: "Suggestion de correspondance :",
+            delay: 100,
+            status: Status.WARN,
+          },
+        ],
         choices: [
           "Alarme Incendie Remix b00m bOOM || a + ib",
           "Le sanglier - DaPoule",
@@ -589,24 +916,58 @@ export function getVosges2024Context() {
             },
           ];
         },
+        result: [
+          { text: "Correction appliquée. Fichier restauré.", delay: 500 },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 4 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Sans tricher sur l'internet mondial, quel est le nom exact du bled dans lequel nous étions ?",
+        question: [
+          { text: "Partition 5/5", delay: 200 },
+          { text: "Localisation du séjour", delay: 100 },
+          { text: "Pays : France", delay: 200 },
+          { text: "Région : Hautes-Vosges", delay: 300 },
+          { text: "Ville : ~#@!$%* ", delay: 100, status: Status.WARN },
+          { text: "Entrée corrompue !", delay: 300, status: Status.ERROR },
+          {
+            text: "Impossible de retrouver la ville exacte. Assistance requise.",
+            delay: 100,
+            status: Status.ERROR,
+          },
+        ],
         validate: (input: string) =>
           ["xonrupt-longemer", "xonrupt longemer"].includes(
             input.trim().toLowerCase()
           ),
+        result: [
+          { text: "Localisation retrouvée. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 5 terminée.", delay: 500 },
+        ],
       },
     ],
     blini: [
       {
-        question: "Quel animal avez-vous pu observer autour du lac ?",
+        question: [
+          { text: "Démarrage de la récupération :", delay: 0 },
+          { text: "Partition 1/5", delay: 600 },
+          {
+            text: "Analyse de la faune locale autour du lac...",
+            delay: 600,
+          },
+          {
+            text: "Identification de l'animal observé nécessaire pour validation mémoire.",
+            delay: 300,
+            status: Status.WARN,
+          },
+        ],
         choices: [
-          "Des Turducken",
+          "Imbrication Turducken",
           "Une Silure de 2,6m",
           "DES CANARDS",
           "COIN~han~",
+          "AP",
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
@@ -635,15 +996,39 @@ export function getVosges2024Context() {
           }
           return ["Incorrect. Try again. HAHA!"];
         },
+        result: [
+          {
+            text: "Observation terminée. Animal identifié.",
+            delay: 500,
+          },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 1 terminée.", delay: 500 },
+        ],
       },
       {
-        question:
-          "Puisque seul VRAI HOMME sait s'occuper d'un barbeuc, qui en a pris la responsabilité ?",
+        question: [
+          { text: "Partition 2/5", delay: 200 },
+          {
+            text: "Apparté Barbercue",
+            delay: 600,
+          },
+          { text: "Allumage : VRAI HOMME", delay: 100 },
+          {
+            text: "Impossible de d'identifier 'VRAI HOMME'. Assistance requise.",
+            delay: 100,
+            status: Status.ERROR,
+          },
+        ],
         choices: ["Jesus", "Merlinou", "Yanou", "Louen", "AP", "TOMA"],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 5;
         },
+        result: [
+          { text: "Identification correcte. Mémoire synchronisée." },
+          { text: "Reprise de la récupération...", delay: 1500 },
+          { text: "Partition 2 terminée.", delay: 500 },
+        ],
       },
       {
         question: "Combien de temps a duré l'escape game apéro ? (environ)",
@@ -844,62 +1229,6 @@ export function getVosges2024Context() {
 
   // Recovery-style mapping for questionSets questions
   const recoveryQuestionsMapping = {
-    Yanou: [
-      {
-        original: "Que n'y avait-il pas dans la salle de jeux ?",
-        recovery:
-          "Partition 1 : Vérification des éléments de la salle de jeux. Assistance utilisateur requise : indiquer l'élément en trop.",
-      },
-      {
-        original: "Qui est 'Le Puant' ?",
-        recovery:
-          "Partition 2 : Identification du terme 'Le Puant'. Veuillez fournir l'identité associée.",
-      },
-      {
-        original:
-          "Qui parmis nous s'est fait attraper la veste par les voisins chiant day 1 ?",
-        recovery:
-          "Partition 3 : Incident détecté - veste attrapée par voisins. Assistance utilisateur requise : identifier la personne concernée.",
-      },
-      {
-        original:
-          "Quel son de QUALITÉ a été ajouté discrètement à la JAM d'Europa Park ?",
-        recovery:
-          "Partition 4 : Détection d'ajout sonore dans la JAM d'Europa Park. Veuillez sélectionner le son de qualité ajouté.",
-      },
-      {
-        original:
-          "Où avait été subtilement placé l'apéro, après que ces cons de JESUS et MERLINOU ne l'ai perdu ?",
-        recovery:
-          "Partition 5 : Localisation de l'apéro après perte. Assistance utilisateur requise : indiquer l'emplacement correct.",
-      },
-    ],
-    MAC: [
-      {
-        original:
-          "Où avait été subtilement placé l'apéro, après que ces cons de JESUS et MERLINOU ne l'ai perdu ?",
-        recovery:
-          "Partition 1 : Localisation de l'apéro après perte. Assistance utilisateur requise : indiquer l'emplacement correct.",
-      },
-      {
-        original:
-          "Parmis les ingrédients suivants, lequel permet de tout sublimer, selon LE PUANT ?",
-        recovery:
-          "Partition 2 : Recherche d'ingrédient optimal selon 'LE PUANT'. Veuillez sélectionner l'élément correct pour la sublimation.",
-      },
-      {
-        original:
-          "Puisque seul VRAI HOMME sait s'occuper d'un barbeuc, qui en a pris la responsabilité ?",
-        recovery:
-          "Partition 3 : Attribution de la responsabilité du barbecue. Assistance utilisateur requise : identifier la personne responsable.",
-      },
-      {
-        original:
-          "Parmis les attractions d'Europa Park suivantes, par laquelle avont nous débuté notre journée ?",
-        recovery:
-          "Partition 4 : Séquence d'attractions à Europa Park. Veuillez indiquer l'attraction initiale de la journée.",
-      },
-    ],
     Louen: [
       {
         original: "Qui est 'Le Ronfleur' ?",
