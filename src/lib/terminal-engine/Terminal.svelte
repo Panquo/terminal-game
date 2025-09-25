@@ -1,5 +1,6 @@
 <script lang="ts">
   export let footer: string = "";
+
   export let prompt: string = "> ";
   import { onMount } from "svelte";
   import { Status } from "../model/enum";
@@ -7,7 +8,7 @@
   export let engine;
 
   let input = "";
-  let lines: string[] = [];
+  let lines: (string | { type?: string; text: string; label?: string,status?:Status })[] = [];
 
   // Initialize lines with intro if present, otherwise default
   const defaultLines = [
@@ -22,10 +23,10 @@
       if (intro) {
         if (Array.isArray(intro)) {
           lines = intro.map((line) =>
-            typeof line === "string" ? line : line.text
+            typeof line === "string" ? line : line
           );
         } else {
-          lines = [typeof intro === "string" ? intro : intro.text];
+          lines = [intro];
         }
       } else {
         lines = [...defaultLines];
@@ -37,10 +38,9 @@
   let historyIndex: number = -1;
   let printing = false;
 
-  let terminalEl: HTMLDivElement;
   let inputEl: HTMLInputElement;
 
-  function pushLines(newLines: string[]) {
+  function pushLines(newLines: (string | { type?: string; text: string; label?: string })[]) {
     lines = [...lines, ...newLines];
     // console.log("Pushing lines:", lines);
   }
@@ -74,6 +74,12 @@
           historyIndex--;
         }
         input = commandHistory[historyIndex];
+        // await tick();
+            setTimeout(() => {
+              if (inputEl) {
+                inputEl.setSelectionRange(input.length, input.length);
+              }
+            }, 0);
       }
     } else if (event.key === "ArrowDown") {
       if (commandHistory.length > 0 && historyIndex !== -1) {
@@ -84,14 +90,21 @@
           historyIndex = -1;
           input = "";
         }
+        // await tick();
+            setTimeout(() => {
+              if (inputEl) {
+                inputEl.setSelectionRange(input.length, input.length);
+              }
+            }, 0);
       }
     }
   }
 
+  import { tick } from "svelte";
   function scrollToBottom() {
-    if (terminalEl) {
-      terminalEl.scrollTop = terminalEl.scrollHeight;
-    }
+    const container = document.querySelector(".terminal");
+    if(!container) return; 
+    container.scrollTop = container.scrollHeight;
   }
   $: if (lines) scrollToBottom();
 
@@ -107,22 +120,29 @@
       return;
     }
     inputEl?.focus();
+    inputEl.setSelectionRange(input.length, input.length);
   }
 
   // Update pushLinesWithDelay to set printing state
-  async function pushLinesWithDelay(linesToPrint: Line[], defaultDelay = 500) {
+  async function pushLinesWithDelay(linesToPrint: (string | { type?: string; text: string; label?: string; status?: string; delay?: number })[], defaultDelay = 500) {
     printing = true;
     for (const line of linesToPrint) {
       if (typeof line === "string") {
         pushLines([line]);
+      } else if (line.type === "link") {
+        pushLines([line]);
       } else {
+        // Affichage enrichi pour les autres objets (status, etc.)
         pushLines([
           `[${formatDate(Date.now())}] [${line.status ?? Status.INFO}] ${line.text}`,
         ]);
-        await new Promise((res) => setTimeout(res, line.delay ?? defaultDelay));
       }
+      scrollToBottom();
+      await new Promise((res) => setTimeout(res, (typeof line === "object" && line.delay !== undefined) ? line.delay : defaultDelay));
     }
     printing = false;
+    await tick();
+    inputEl?.focus();
   }
 
   function formatDate(date: number) {
@@ -135,15 +155,30 @@
     // Simple heuristic: if line contains lots of \ or / or _ or |, treat as art
     return typeof line === "string" && /[\\/_|]{3,}/.test(line);
   }
+  function status(line: string): string {
+    if (typeof line !== "string") return "";
+    if (line.includes("[INFO]")) return "info-tag";
+    if (line.includes("[ERROR]")) return "error-tag";
+    if (line.includes("[WARN]")) return "warn-tag";
+    return "";
+  }
 </script>
 
-<div class="terminal" bind:this={terminalEl} on:click={focusInputIfAllowed}>
+<div class="terminal" on:click={focusInputIfAllowed}>
   <!-- Render lines -->
   {#each lines as line}
-    {#if isAsciiArt(line)}
-      <pre class="ascii-art">{line}</pre>
+    {#if typeof line === "string"}
+      {#if isAsciiArt(line)}
+        <pre class="ascii-art">{line}</pre>
+      {:else}
+        <div class="line {status(line)}">{line}</div>
+      {/if}
+    {:else if line.type === "link"}
+      <div class="line {status(`[${formatDate(Date.now())}] [${line.status ?? 'INFO'}]`)}">
+        [{formatDate(Date.now())}] [{line.status ?? 'INFO'}] <a href={line.text} target="_blank">{line.label ? line.label : line.text}</a>
+      </div>
     {:else}
-      <div class="line">{line}</div>
+      <div class="line">{line.text}</div>
     {/if}
   {/each}
 
@@ -159,7 +194,6 @@
         bind:value={input}
         on:keydown={handleKeydown}
         autocomplete="off"
-        autofocus
       />
     </div>
   {/if}
@@ -175,9 +209,26 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    .line {
-      text-align: left;
-    }
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100vh;
+    box-sizing: border-box;
+  }
+  .line {
+    text-align: left;
+  }
+  .info-tag {
+    color: #4a94d5;
+    font-weight: bold;
+    
+  }
+  .warn-tag {
+    color: #f7d427;
+    font-weight: bold;
+  }
+  .error-tag {
+    color: #ff172e;
+    font-weight: bold;
   }
   .input-line {
     display: flex;

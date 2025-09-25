@@ -39,6 +39,8 @@ export function getVosges2024Context() {
     { text: "Finalizing file...", delay: 100 },
     { text: "File saved successfully!", delay: 100 },
     { text: "Here is your file :", delay: 100 },
+    { type: "link", text: "https://example.com", label: "Lien : https://example.com", delay: 100 },
+    { text: "Mot de passe : date de location au format ddmmYY", delay: 100 },
   ];
 
   let steps = [
@@ -58,7 +60,7 @@ export function getVosges2024Context() {
       ],
       validate: (input: string) => {
         const num = parseInt(input.trim(), 10);
-        return !isNaN(num) && num != 2 && num >= 1 && num <= 4; // 4 choices in this example
+        return !isNaN(num) && num != 2 && num >= 1 && num <= 8; // 4 choices in this example
       },
       storeResult: (input: string, ctx: any) => {
         const idx = parseInt(input.trim()) - 1;
@@ -71,9 +73,19 @@ export function getVosges2024Context() {
       errorMessage: (input: string) => {
         const idx = parseInt(input.trim()) - 1;
         if (idx === 1) {
-          return ["haha. Well tried, but you are not Merlinou."];
+          return [
+            {
+              text: "Vous ne pouvez statistiquement pas être MERLIN.",
+              status: Status.ERROR,
+            },
+          ];
         }
-        return ["Incorrect. Try again."];
+        return [
+          {
+            text: "Identité non reconnue. Veuillez réessayer.",
+            status: Status.ERROR,
+          },
+        ];
       },
       result: [
         { text: "Identification...", delay: 300 },
@@ -113,7 +125,7 @@ export function getVosges2024Context() {
           return [
             {
               text: "Identification impossible. Réessayez.",
-              status: Status.WARN,
+              status: Status.ERROR,
             },
           ];
         },
@@ -150,13 +162,20 @@ export function getVosges2024Context() {
               return [
                 {
                   text: "Bien qu'une association soit liée, ça n'est pas le bon ingrédient.",
-                  status: Status.WARN,
+                  status: Status.ERROR,
                 },
               ];
             case 4:
               return [
                 {
                   text: "Le houmous est peut-être optimal pour la santé, mais pas pour la sublimation.",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
                   status: Status.ERROR,
                 },
               ];
@@ -197,29 +216,37 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 1) {
-            return [
-              {
-                text: "Un Turducken est bien imbriqué dans la mémoire, mais il ne semble pas être lié au lac.",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 2) {
-            return [
-              {
-                text: "Overflow mémoire détecté",
-                status: Status.WARN,
-              },
-              {
-                text: "Impossible de stocker un Silure de 2,6m dans la mémoire.",
-                status: Status.WARN,
-              },
-            ];
-          } else if (num === 5) {
-            return [
-              { text: "Message de l'auteur trouvé.", status: Status.WARN },
-              { text: "'WESH ? Un peu de respect.'", status: Status.ERROR },
-            ];
+          switch (num) {
+            case 1:
+              return [
+                {
+                  text: "Un Turducken est bien imbriqué dans la mémoire, mais il ne semble pas être lié au lac.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 2:
+              return [
+                {
+                  text: "Overflow mémoire détecté",
+                  status: Status.WARN,
+                },
+                {
+                  text: "Impossible de stocker un Silure de 2,6m dans la mémoire.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 5:
+              return [
+                { text: "Message de l'auteur trouvé.", status: Status.WARN },
+                { text: "'WESH ? Un peu de respect.'", status: Status.ERROR },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
         },
         result: [
@@ -307,12 +334,21 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return [
-            {
-              text: `BANGER présent dans les éléments audios du séjour, mais inconnu de la JAM`,
-              status: Status.ERROR,
-            },
-          ];
+          if (num > 0 && num < 5) {
+            return [
+              {
+                text: `BANGER présent dans les éléments audios du séjour, mais inconnu de la JAM`,
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Correction appliquée. Fichier restauré.", delay: 500 },
@@ -347,7 +383,7 @@ export function getVosges2024Context() {
           return [
             {
               text: "Identification impossible. Réessayez.",
-              status: Status.WARN,
+              status: Status.ERROR,
             },
           ];
         },
@@ -384,24 +420,34 @@ export function getVosges2024Context() {
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return !isNaN(num) && num === 3;
+          return !isNaN(num) && num === 4;
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 3) {
-            return [
-              {
-                text: "LOUEN semble une preuve vivante qu'il y avait du skill.",
-                status: Status.WARN,
-              },
-            ];
-          } else if (num === 5 || num === 1 || num === 2) {
-            return [
-              {
-                text: "Il semble que cet élément soit bien présent en mémoire...",
-                status: Status.ERROR,
-              },
-            ];
+          switch (num) {
+            case 3:
+              return [
+                {
+                  text: "LOUEN semble être une preuve vivante qu'il y avait du skill.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 5:
+            case 1:
+            case 2:
+              return [
+                {
+                  text: "Il semble que cet élément soit bien présent en mémoire...",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
         },
         result: [
@@ -459,12 +505,22 @@ export function getVosges2024Context() {
           return !isNaN(num) && num === 1;
         },
         errorMessage: (input: string) => {
-          return [
-            {
-              text: "Il est lié à cette histoire mais il ne s'est pas fait bully (cette fois).",
-              status: Status.ERROR,
-            },
-          ];
+          const num = parseInt(input.trim(), 10);
+          if (num > 0 && num < 6) {
+            return [
+              {
+                text: "Iel est lié.e à cette histoire mais iel ne s'est pas fait.e bully (cette fois).",
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Identification correcte. Mémoire synchronisée." },
@@ -507,12 +563,21 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return [
-            {
-              text: `BANGER présent dans les éléments audios du séjour, mais inconnu de la JAM`,
-              status: Status.ERROR,
-            },
-          ];
+          if (num > 0 && num < 5) {
+            return [
+              {
+                text: `BANGER présent dans les éléments audios du séjour, mais inconnu de la JAM`,
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Correction appliquée. Fichier restauré.", delay: 500 },
@@ -559,17 +624,33 @@ export function getVosges2024Context() {
           const num = parseInt(input.trim(), 10);
           switch (num) {
             case 1:
-              return [ 
-                { text: "YANOU ne semble pas avoir amené sa voiture...", status: Status.ERROR }
+              return [
+                {
+                  text: "YANOU ne semble pas avoir amené sa voiture...",
+                  status: Status.ERROR,
+                },
               ];
             case 2:
               return [
-                { text: "Fort heureusement je n'en possède pas.", status: Status.ERROR }
+                {
+                  text: "Fort heureusement je n'en possède pas.",
+                  status: Status.ERROR,
+                },
               ];
             case 4:
               return [
                 { text: "Message de l'auteur trouvé.", status: Status.WARN },
-                { text: "'Rapport à la musique TAKAPTE ? Mais non.'", status: Status.ERROR },
+                {
+                  text: "'Rapport à la musique TAKAPTE ? Mais non.'",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
               ];
           }
         },
@@ -617,6 +698,40 @@ export function getVosges2024Context() {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 3;
         },
+        errorMessage: (input: string) => {
+          const num = parseInt(input.trim(), 10);
+          switch (num) {
+            case 1:
+              return [
+                {
+                  text: "YANOU ne semble pas avoir amené sa voiture...",
+                  status: Status.ERROR,
+                },
+              ];
+            case 2:
+              return [
+                {
+                  text: "Fort heureusement je n'en possède pas.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 4:
+              return [
+                { text: "Message de l'auteur trouvé.", status: Status.WARN },
+                {
+                  text: "'Rapport à la musique TAKAPTE ? Mais non.'",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
+          }
+        },
         result: [
           { text: "Conclusion récupérée. Artefact restauré.", delay: 300 },
           { text: "Reprise de la récupération...", delay: 1500 },
@@ -643,7 +758,31 @@ export function getVosges2024Context() {
           return !isNaN(num) && num == 2;
         },
         errorMessage: (input: string) => {
-          return ["Incorrect. Try again. HAHA!"];
+          const num = parseInt(input.trim(), 10);
+          switch (num) {
+            case 1:
+            case 3:
+              return [
+                {
+                  text: "Bien qu'une association soit liée, ça n'est pas le bon ingrédient.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 4:
+              return [
+                {
+                  text: "Le houmous est peut-être optimal pour la santé, mais pas pour la sublimation.",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
+          }
         },
         result: [
           {
@@ -658,7 +797,7 @@ export function getVosges2024Context() {
         question: [
           { text: "Partition 3/5", delay: 200 },
           {
-            text: "Apparté Barbercue",
+            text: "Apparté Barbecue",
             delay: 600,
           },
           { text: "Allumage : VRAI HOMME", delay: 100 },
@@ -672,6 +811,24 @@ export function getVosges2024Context() {
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 5;
+        },
+        errorMessage: (input: string) => {
+          const num = parseInt(input.trim(), 10);
+          if (num > 0 && num < 7) {
+            return [
+              {
+                text: "Incorrect. ce n'est pas le bon homme.",
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Identification correcte. Mémoire synchronisée." },
@@ -696,7 +853,7 @@ export function getVosges2024Context() {
             status: Status.ERROR,
           },
           {
-            text: "Identification requise.",
+            text: "Identification de l'attraction requise.",
             delay: 600,
             status: Status.ERROR,
           },
@@ -708,12 +865,21 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return [
-            {
-              text: `Fffsshhhht ! ~rollrollroll~ Ce n'est pas la bonne attraction...`,
-              status: Status.ERROR,
-            },
-          ];
+          if (num > 0 && num < 5) {
+            return [
+              {
+                text: `Fffsshhhht ! ~rollrollroll~ Ce n'est pas la bonne attraction...`,
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Attraction identifiée. Mémoire synchronisée." },
@@ -742,7 +908,7 @@ export function getVosges2024Context() {
           "moins de 5 deniers",
           "un smic",
           "environ deux smics",
-          "entre 5 euros et un smic",
+          "entre 5 deniers et un smic",
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
@@ -750,27 +916,39 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 2) {
-            return [
-              {
-                text: "Abuse...",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 3) {
-            return [
-              {
-                text: "T'es marseillais toi non ? Fratéé",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 1) {
-            return [
-              {
-                text: "TOMA n'est pas aussi radin.",
-                status: Status.WARN,
-              },
-            ];
+          switch (num) {
+            case 2:
+              return [
+                {
+                  text: "Abuse...",
+                  status: Status.ERROR,
+                },
+              ];
+            case 3:
+              return [
+                {
+                  text: "T'es marseillais toi non ? Fratéé",
+                  status: Status.ERROR,
+                },
+              ];
+            case 1:
+              return [
+                {
+                  text: "Les deniers ne sont plus en vigueur depuis l'an 7, à une vache pré.",
+                  status: Status.ERROR,
+                },
+                {
+                  text: "Et de toute façon, qu'allez-vous faire de tout ces deniers ?",
+                  status: Status.WARN,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
         },
         result: [
@@ -807,6 +985,14 @@ export function getVosges2024Context() {
           ["yanou", "yann", "yannou", "le ronfleur"].includes(
             input.trim().toLocaleLowerCase()
           ),
+        errorMessage: (input: string) => {
+          return [
+            {
+              text: "Identification impossible. Réessayez.",
+              status: Status.ERROR,
+            },
+          ];
+        },
         result: [
           { text: "Association correcte. Mémoire synchronisée." },
           { text: "Reprise de la récupération...", delay: 1500 },
@@ -830,7 +1016,7 @@ export function getVosges2024Context() {
             status: Status.ERROR,
           },
           {
-            text: "Identification requise.",
+            text: "Identification de l'attraction requise.",
             delay: 600,
             status: Status.ERROR,
           },
@@ -842,12 +1028,21 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return [
-            {
-              text: `Fffsshhhht ! ~rollrollroll~ Ce n'est pas la bonne attraction...`,
-              status: Status.ERROR,
-            },
-          ];
+          if (num > 0 && num < 5)
+            return [
+              {
+                text: `Fffsshhhht ! ~rollrollroll~ Ce n'est pas la bonne attraction...`,
+                status: Status.ERROR,
+              },
+            ];
+          else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Attraction identifiée. Mémoire synchronisée." },
@@ -882,41 +1077,42 @@ export function getVosges2024Context() {
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return !isNaN(num) && num === 3;
+          return !isNaN(num) && num === 4;
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 3) {
-            return [
-              {
-                text: "LOUEN est une preuve vivante (ce jeu a peut-être mal vieilli) qu'il y avait du skill.",
-                status: Status.WARN,
-              },
-            ];
-          } else if (num === 4) {
-            return [
-              {
-                text: "Jamais John Fitzgerald Kennedy n'aurait laissé faire ça... 🙅‍♂️ C'est-à-dire qu'il y a 42 millions d'ukrainiens 🇺🇦 70% sont des chrétiens ✝️ et le pape RESTE au Vatican 🏛️ AU LIEU D'ALLER À KIEV ??? 😡 et de dire TUEZ-MOI ☠️ Je représente le Christ ⛪️ JE REPRÉSENTE LE CHRIST 🙏",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 5 || num === 1 || num === 2) {
-            return [
-              {
-                text: "Il semble que cet élément soit bien présent en mémoire...",
-                status: Status.ERROR,
-              },
-            ];
+          switch (num) {
+            case 3:
+              return [
+                {
+                  text: "LOUEN semble être une preuve vivante qu'il y avait du skill.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 5:
+            case 1:
+            case 2:
+              return [
+                {
+                  text: "Il semble que cet élément soit bien présent en mémoire...",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
-          return [
-            {
-              text: "Incorrect. Try again.",
-              status: Status.ERROR,
-            },
-          ];
         },
         result: [
-          { text: "Identification correcte. Mémoire synchronisée." },
+          {
+            text: "Jamais John Fitzgerald Kennedy n'aurait laissé faire ça... 🙅‍♂️ C'est-à-dire qu'il y a 42 millions d'ukrainiens 🇺🇦 70% sont des chrétiens ✝️ et le pape RESTE au Vatican 🏛️ AU LIEU D'ALLER À KIEV ??? 😡 et de dire TUEZ-MOI ☠️ Je représente le Christ ⛪️ JE REPRÉSENTE LE CHRIST 🙏",
+            status: Status.ERROR,
+          },
+          { text: "Intrus identifié. Mémoire synchronisée." },
           { text: "Reprise de la récupération...", delay: 1500 },
           { text: "Partition 3 terminée.", delay: 500 },
         ],
@@ -956,12 +1152,21 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return [
-            {
-              text: `BANGER présent dans les éléments audios du séjour, mais inconnu de la JAM`,
-              status: Status.ERROR,
-            },
-          ];
+          if (num > 0 && num < 5) {
+            return [
+              {
+                text: `BANGER présent dans les éléments audios du séjour, mais inconnu de la JAM`,
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Correction appliquée. Fichier restauré.", delay: 500 },
@@ -987,6 +1192,14 @@ export function getVosges2024Context() {
           ["xonrupt-longemer", "xonrupt longemer"].includes(
             input.trim().toLowerCase()
           ),
+        errorMessage: (input: string) => {
+          return [
+            {
+              text: "Ville non reconnue. Veuillez réessayer.",
+              status: Status.ERROR,
+            },
+          ];
+        },
         result: [
           { text: "Localisation retrouvée. Mémoire synchronisée." },
           { text: "Reprise de la récupération...", delay: 1500 },
@@ -1022,26 +1235,38 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 1) {
-            return [
-              {
-                text: "Un Turducken est bien imbriqué dans la mémoire, mais il ne semble pas être lié au lac.",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 2) {
-            return [
-              {
-                text: "Overflow mémoire détecté",
-                status: Status.WARN,
-              },
-              {
-                text: "Impossible de stocker un Silure de 2,6m dans la mémoire.",
-                status: Status.WARN,
-              },
-            ];
+          switch (num) {
+            case 1:
+              return [
+                {
+                  text: "Un Turducken est bien imbriqué dans la mémoire, mais il ne semble pas être lié au lac.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 2:
+              return [
+                {
+                  text: "Overflow mémoire détecté",
+                  status: Status.ERROR,
+                },
+                {
+                  text: "Impossible de stocker un Silure de 2,6m dans la mémoire.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 5:
+              return [
+                { text: "Message de l'auteur trouvé.", status: Status.WARN },
+                { text: "'WESH ? Un peu de respect.'", status: Status.ERROR },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
-          return ["Incorrect. Try again. HAHA!"];
         },
         result: [
           {
@@ -1056,7 +1281,7 @@ export function getVosges2024Context() {
         question: [
           { text: "Partition 2/5", delay: 200 },
           {
-            text: "Apparté Barbercue",
+            text: "Apparté Barbecue",
             delay: 600,
           },
           { text: "Allumage : VRAI HOMME", delay: 100 },
@@ -1071,6 +1296,24 @@ export function getVosges2024Context() {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 5;
         },
+        errorMessage: (input: string) => {
+          const num = parseInt(input.trim(), 10);
+          if (num > 0 && num < 7) {
+            return [
+              {
+                text: "Incorrect. ce n'est pas le bon homme.",
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
+        },
         result: [
           { text: "Identification correcte. Mémoire synchronisée." },
           { text: "Reprise de la récupération...", delay: 1500 },
@@ -1084,7 +1327,7 @@ export function getVosges2024Context() {
           { text: "Thème: Apéro", delay: 200 },
           { text: "Durée: ----", delay: 800, status: Status.WARN },
           {
-            text: "Impossible d'edstimer la durée approximative. Intervention requise.",
+            text: "Impossible d'estimer la durée approximative. Intervention requise.",
             delay: 200,
             status: Status.WARN,
           },
@@ -1119,6 +1362,13 @@ export function getVosges2024Context() {
             case 4:
               return [
                 { text: "Il semble que vous abusiez.", status: Status.ERROR },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
               ];
           }
         },
@@ -1177,7 +1427,7 @@ export function getVosges2024Context() {
           "moins de 5 deniers",
           "un smic",
           "environ deux smics",
-          "entre 5 euros et un smic",
+          "entre 5 deniers et un smic",
         ],
         validate: (input: string) => {
           const num = parseInt(input.trim(), 10);
@@ -1185,27 +1435,39 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 2) {
-            return [
-              {
-                text: "Abuse...",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 3) {
-            return [
-              {
-                text: "T'es marseillais toi non ? Fratéé",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 1) {
-            return [
-              {
-                text: "TOMA n'est pas aussi radin.",
-                status: Status.WARN,
-              },
-            ];
+          switch (num) {
+            case 2:
+              return [
+                {
+                  text: "Abuse...",
+                  status: Status.ERROR,
+                },
+              ];
+            case 3:
+              return [
+                {
+                  text: "T'es marseillais toi non ? Fratéé",
+                  status: Status.ERROR,
+                },
+              ];
+            case 1:
+              return [
+                {
+                  text: "Les deniers ne sont plus en vigueur depuis l'an 7, à une vache pré.",
+                  status: Status.ERROR,
+                },
+                {
+                  text: "Et de toute façon, qu'allez-vous faire de tout ces deniers ?",
+                  status: Status.WARN,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
         },
         result: [
@@ -1246,26 +1508,38 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          if (num === 1) {
-            return [
-              {
-                text: "Un Turducken est bien imbriqué dans la mémoire, mais il ne semble pas être lié au lac.",
-                status: Status.ERROR,
-              },
-            ];
-          } else if (num === 2) {
-            return [
-              {
-                text: "Overflow mémoire détecté",
-                status: Status.WARN,
-              },
-              {
-                text: "Impossible de stocker un Silure de 2,6m dans la mémoire.",
-                status: Status.WARN,
-              },
-            ];
+          switch (num) {
+            case 1:
+              return [
+                {
+                  text: "Un Turducken est bien imbriqué dans la mémoire, mais il ne semble pas être lié au lac.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 2:
+              return [
+                {
+                  text: "Overflow mémoire détecté",
+                  status: Status.ERROR,
+                },
+                {
+                  text: "Impossible de stocker un Silure de 2,6m dans la mémoire.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 5:
+              return [
+                { text: "Message de l'auteur trouvé.", status: Status.WARN },
+                { text: "'WESH ? Un peu de respect.'", status: Status.ERROR },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
           }
-          return ["Incorrect. Try again. HAHA!"];
         },
         result: [
           {
@@ -1294,6 +1568,14 @@ export function getVosges2024Context() {
           ["xonrupt-longemer", "xonrupt longemer"].includes(
             input.trim().toLowerCase()
           ),
+        errorMessage: (input: string) => {
+          return [
+            {
+              text: "Ville non reconnue. Veuillez réessayer.",
+              status: Status.ERROR,
+            },
+          ];
+        },
         result: [
           { text: "Localisation retrouvée. Mémoire synchronisée." },
           { text: "Reprise de la récupération...", delay: 1500 },
@@ -1307,7 +1589,7 @@ export function getVosges2024Context() {
           { text: "Thème: Apéro", delay: 200 },
           { text: "Durée: ----", delay: 800, status: Status.WARN },
           {
-            text: "Impossible d'edstimer la durée approximative. Intervention requise.",
+            text: "Impossible d'estimer la durée approximative. Intervention requise.",
             delay: 200,
             status: Status.WARN,
           },
@@ -1323,12 +1605,34 @@ export function getVosges2024Context() {
           return !isNaN(num) && num === 2;
         },
         errorMessage: (input: string) => {
-          return [
-            {
-              text: "Non, la durée n'est pas correcte. Essaie encore !",
-              status: Status.ERROR,
-            },
-          ];
+          const num = parseInt(input.trim(), 10);
+          switch (num) {
+            case 1:
+              return [
+                {
+                  text: "Cette durée semble trop courte non ?",
+                  status: Status.ERROR,
+                },
+              ];
+            case 3:
+              return [
+                {
+                  text: "Seriez-vous -par pur hasard- Marseillais ?.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 4:
+              return [
+                { text: "Il semble que vous abusiez.", status: Status.ERROR },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
+          }
         },
         result: [
           { text: "Durée estimée. Mémoire synchronisée." },
@@ -1408,12 +1712,22 @@ export function getVosges2024Context() {
           return !isNaN(num) && num === 1;
         },
         errorMessage: (input: string) => {
-          return [
-            {
-              text: "Il est lié à cette histoire mais il ne s'est pas fait bully (cette fois).",
-              status: Status.ERROR,
-            },
-          ];
+          const num = parseInt(input.trim(), 10);
+          if (num > 0 && num < 6) {
+            return [
+              {
+                text: "Iel est lié.e à cette histoire mais iel ne s'est pas fait.e bully (cette fois).",
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Identification correcte. Mémoire synchronisée." },
@@ -1447,7 +1761,7 @@ export function getVosges2024Context() {
         errorMessage: (input: string) => {
           return [
             {
-              text: "Non, ce n'est pas la bonne identité. Essaie encore !",
+              text: "Identification impossible. Réessayez.",
               status: Status.ERROR,
             },
           ];
@@ -1503,7 +1817,7 @@ export function getVosges2024Context() {
             status: Status.ERROR,
           },
           {
-            text: "Identification requise.",
+            text: "Identification de l'attraction requise.",
             delay: 600,
             status: Status.ERROR,
           },
@@ -1515,12 +1829,21 @@ export function getVosges2024Context() {
         },
         errorMessage: (input: string) => {
           const num = parseInt(input.trim(), 10);
-          return [
-            {
-              text: `Fffsshhhht ! ~rollrollroll~ Ce n'est pas la bonne attraction...`,
-              status: Status.ERROR,
-            },
-          ];
+          if (num > 0 && num < 5) {
+            return [
+              {
+                text: `Fffsshhhht ! ~rollrollroll~ Ce n'est pas la bonne attraction...`,
+                status: Status.ERROR,
+              },
+            ];
+          } else {
+            return [
+              {
+                text: "Identifiant non reconnu. Veuillez réessayer.",
+                status: Status.ERROR,
+              },
+            ];
+          }
         },
         result: [
           { text: "Attraction identifiée. Mémoire synchronisée." },
@@ -1548,7 +1871,31 @@ export function getVosges2024Context() {
           return !isNaN(num) && num == 2;
         },
         errorMessage: (input: string) => {
-          return ["Incorrect. Try again. HAHA!"];
+          const num = parseInt(input.trim(), 10);
+          switch (num) {
+            case 1:
+            case 3:
+              return [
+                {
+                  text: "Bien qu'une association soit liée, ça n'est pas le bon ingrédient.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 4:
+              return [
+                {
+                  text: "Le houmous est peut-être optimal pour la santé, mais pas pour la sublimation.",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
+          }
         },
         result: [
           {
@@ -1594,133 +1941,45 @@ export function getVosges2024Context() {
           const num = parseInt(input.trim(), 10);
           return !isNaN(num) && num === 3;
         },
+        errorMessage: (input: string) => {
+          const num = parseInt(input.trim(), 10);
+          switch (num) {
+            case 1:
+              return [
+                {
+                  text: "YANOU ne semble pas avoir amené sa voiture...",
+                  status: Status.ERROR,
+                },
+              ];
+            case 2:
+              return [
+                {
+                  text: "Fort heureusement je n'en possède pas.",
+                  status: Status.ERROR,
+                },
+              ];
+            case 4:
+              return [
+                { text: "Message de l'auteur trouvé.", status: Status.WARN },
+                {
+                  text: "'Rapport à la musique TAKAPTE ? Mais non.'",
+                  status: Status.ERROR,
+                },
+              ];
+            default:
+              return [
+                {
+                  text: "Identifiant non reconnu. Veuillez réessayer.",
+                  status: Status.ERROR,
+                },
+              ];
+          }
+        },
         result: [
           { text: "Conclusion récupérée. Artefact restauré.", delay: 300 },
           { text: "Reprise de la récupération...", delay: 1500 },
           { text: "Partition 5 terminée.", delay: 500 },
         ],
-      },
-    ],
-  };
-
-  // Recovery-style mapping for questionSets questions
-  const recoveryQuestionsMapping = {
-    Louen: [
-      {
-        original: "Qui est 'Le Ronfleur' ?",
-        recovery:
-          "Partition 1 : Anomalie détectée - le terme 'Le Ronfleur' a été rencontré. Assistance utilisateur requise : identifier la personne associée.",
-      },
-      {
-        original:
-          "Parmis les attractions d'Europa Park suivantes, par laquelle avont nous débuté notre journée ?",
-        recovery:
-          "Partition 2 : Séquence d'attractions à Europa Park. Veuillez indiquer l'attraction initiale de la journée.",
-      },
-      {
-        original: "Que n'y avait-il pas dans la salle de jeux ?",
-        recovery:
-          "Partition 3 : Vérification des éléments absents dans la salle de jeux. Assistance utilisateur requise : indiquer l'élément manquant.",
-      },
-      {
-        original:
-          "Quel son de QUALITÉ a été ajouté discrètement à la JAM d'Europa Park ?",
-        recovery:
-          "Partition 4 : Détection d'ajout sonore dans la JAM d'Europa Park. Veuillez sélectionner le son de qualité ajouté.",
-      },
-      {
-        original:
-          "Sans tricher sur l'internet mondial, quel est le nom exact du bled dans lequel nous étions ?",
-        recovery:
-          "Partition 5 : Validation du nom du lieu de séjour sans accès externe. Assistance utilisateur requise : fournir le nom exact.",
-      },
-    ],
-    Blini: [
-      {
-        original: "Quel animal avez-vous pu observer autour du lac ?",
-        recovery:
-          "Partition 1 : Analyse de la faune locale autour du lac. Veuillez indiquer l'animal observé pour validation mémoire.",
-      },
-      {
-        original:
-          "Puisque seul VRAI HOMME sait s'occuper d'un barbeuc, qui en a pris la responsabilité ?",
-        recovery:
-          "Partition 2 : Attribution de la responsabilité du barbecue. Assistance utilisateur requise : identifier la personne responsable.",
-      },
-      {
-        original: "Combien de temps a duré l'escape game apéro ? (environ)",
-        recovery:
-          "Partition 3 : Durée de l'escape game apéro. Veuillez sélectionner la durée approximative.",
-      },
-      {
-        original: "De qui a t'on souhaité l'anniversaire pendant le séjour ?",
-        recovery:
-          "Partition 4 : Identification de la personne fêtée pendant le séjour. Assistance utilisateur requise : fournir le nom.",
-      },
-      {
-        original:
-          "combien d'euros TOMA a t'il dépensé dans les bonbons de la CDHV ?",
-        recovery:
-          "Partition 5 : Analyse des dépenses de TOMA en bonbons à la CDHV. Veuillez indiquer le montant approximatif.",
-      },
-    ],
-    AP: [
-      {
-        original: "Quel animal avez-vous pu observer autour du lac ?",
-        recovery:
-          "Partition 1 : Analyse de la faune locale autour du lac. Veuillez indiquer l'animal observé pour validation mémoire.",
-      },
-      {
-        original:
-          "Sans tricher sur l'internet mondial, quel est le nom exact du bled dans lequel nous étions ?",
-        recovery:
-          "Partition 2 : Validation du nom du lieu de séjour sans accès externe. Assistance utilisateur requise : fournir le nom exact.",
-      },
-      {
-        original: "Combien de temps a duré l'escape game apéro ? (environ)",
-        recovery:
-          "Partition 3 : Durée de l'escape game apéro. Veuillez sélectionner la durée approximative.",
-      },
-      {
-        original: "De qui a t'on souhaité l'anniversaire pendant le séjour ?",
-        recovery:
-          "Partition 4 : Identification de la personne fêtée pendant le séjour. Assistance utilisateur requise : fournir le nom.",
-      },
-      {
-        original:
-          "Qui parmis nous s'est fait attraper la veste par les voisins chiant day 1 ?",
-        recovery:
-          "Partition 5 : Incident détecté - veste attrapée par voisins. Assistance utilisateur requise : identifier la personne concernée.",
-      },
-    ],
-    TOMA: [
-      {
-        original: "De qui a t'on souhaité l'anniversaire pendant le séjour ?",
-        recovery:
-          "Partition 1 : Identification de la personne fêtée pendant le séjour. Assistance utilisateur requise : fournir le nom.",
-      },
-      {
-        original: "Qui est 'Le Puant' ?",
-        recovery:
-          "Partition 2 : Identification du terme 'Le Puant'. Veuillez fournir l'identité associée.",
-      },
-      {
-        original:
-          "Parmis les attractions d'Europa Park suivantes, par laquelle avont nous débuté notre journée ?",
-        recovery:
-          "Partition 3 : Séquence d'attractions à Europa Park. Veuillez indiquer l'attraction initiale de la journée.",
-      },
-      {
-        original:
-          "Parmis les ingrédients suivants, lequel permet de tout sublimer, selon LE PUANT ?",
-        recovery:
-          "Partition 4 : Recherche d'ingrédient optimal selon 'LE PUANT'. Veuillez sélectionner l'élément correct pour la sublimation.",
-      },
-      {
-        original:
-          "Où avait été subtilement placé l'apéro, après que ces cons de JESUS et MERLINOU ne l'ai perdu ?",
-        recovery:
-          "Partition 5 : Localisation de l'apéro après perte. Assistance utilisateur requise : indiquer l'emplacement correct.",
       },
     ],
   };
@@ -1748,6 +2007,17 @@ export function getVosges2024Context() {
 
   const commands = new Map<string, Command>();
 
+  // Commande spéciale pour bypass toutes les questions
+  commands.set("bypass", {
+    description: "Bypass toutes les questions et affiche la fin",
+    run: async (_, ctx) => {
+      ctx.state.started = true;
+      ctx.state.step = steps.length;
+      ctx.state.awaitingAnswer = false;
+      return outro;
+    },
+  });
+
   commands.set("start", {
     description: "Begin recovery program",
     run: async (_, ctx) => {
@@ -1772,7 +2042,6 @@ export function getVosges2024Context() {
         { text: "Algorithme prêt.", delay: 500 },
         { text: "Identification requise. ", status: Status.WARN, delay: 800 },
         ...getQuestionLines(steps[0]),
-        "Type your answer:",
       ];
       return lines;
     },
@@ -1781,16 +2050,15 @@ export function getVosges2024Context() {
   commands.set("status", {
     description: "Check progress",
     run: (_, ctx) => {
-      if (!ctx.state.started) return ["Game not started. Type 'start'."];
+      if (!ctx.state.started) return ["Recovery not started. Type 'start'."];
       const lines = [`Current step: ${ctx.state.step + 1} / ${steps.length}`];
       if (ctx.state.awaitingAnswer) {
-        lines.push("Awaiting answer.");
+        lines.push("En attente d'assistance.");
         lines.push(...getQuestionLines(steps[ctx.state.step]));
-        lines.push("Type your answer:");
       } else if (ctx.state.step >= steps.length) {
-        lines.push("Game completed!");
+        lines.push("Recovery complete!");
       } else {
-        lines.push("Ready for next question.");
+        lines.push("Prêt à continuer.");
       }
       return lines;
     },
@@ -1799,9 +2067,9 @@ export function getVosges2024Context() {
   commands.set("answer", {
     description: "Answer the current question",
     run: (args, ctx) => {
-      if (!ctx.state.started) return ["Start the game first."];
+      if (!ctx.state.started) return ["Please start the recovery first."];
       if (!ctx.state.awaitingAnswer)
-        return ["No question to answer right now."];
+        return ["No assistance is required right now."];
 
       let activeSteps = ctx.state.steps || steps;
       const step = activeSteps[ctx.state.step];
@@ -1831,16 +2099,24 @@ export function getVosges2024Context() {
             ...getQuestionLines(ctx.state.steps[ctx.state.step]),
           ];
         } else {
-          if (step.errorMessage) {
-            return [
-              ...step.errorMessage(userAnswer),
-              ...getQuestionLines(step),
+          // Only show the last line of the question (plus choices)
+          const qLines = getQuestionLines(step);
+          const lastLine =
+            qLines[
+              qLines.length - (step.choices ? step.choices.length + 1 : 1)
             ];
+          let linesToShow = [];
+          if (step.choices) {
+            linesToShow = [lastLine, ...qLines.slice(-step.choices.length)];
+          } else {
+            linesToShow = [lastLine];
+          }
+          if (step.errorMessage) {
+            return [...step.errorMessage(userAnswer), ...linesToShow];
           }
           return [
-            { text: "Incorrect. Try again.", status: Status.ERROR }, //TODO: generate error messages
-            ,
-            ...getQuestionLines(step),
+            { text: "Incorrect, réessayez", status: Status.ERROR },
+            ...linesToShow,
           ];
         }
       }
@@ -1863,17 +2139,23 @@ export function getVosges2024Context() {
             "Type your answer:",
           ];
         } else {
-          let endMsg = "Congratulations, you finished the game!";
-          if (ctx.state.favoriteColor) {
-            endMsg += ` Your favorite color was: ${ctx.state.favoriteColor}.`;
-          }
-          return [...resultMsg, endMsg, ...outro];
+          return [...resultMsg, ...outro];
         }
       } else {
-        if (step.errorMessage) {
-          return [...step.errorMessage(userAnswer), ...getQuestionLines(step)];
+        // Only show the last line of the question (plus choices)
+        const qLines = getQuestionLines(step);
+        const lastLine =
+          qLines[qLines.length - (step.choices ? step.choices.length + 1 : 1)];
+        let linesToShow = [];
+        if (step.choices) {
+          linesToShow = [lastLine, ...qLines.slice(-step.choices.length)];
+        } else {
+          linesToShow = [lastLine];
         }
-        return ["Incorrect. Try again.", ...getQuestionLines(step)];
+        if (step.errorMessage) {
+          return [...step.errorMessage(userAnswer), ...linesToShow];
+        }
+        return ["Incorrect. Try again.", ...linesToShow];
       }
     },
   });
