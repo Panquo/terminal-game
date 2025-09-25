@@ -17,4 +17,4 @@ RUN npm run build
 
 USER 1001
 
-CMD ["npx", "serve", "-s", "build"]
+CMD ["npx", "serve", "-s", "dist"]
