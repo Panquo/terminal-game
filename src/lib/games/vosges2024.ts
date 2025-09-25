@@ -2083,17 +2083,13 @@ export function getVosges2024Context() {
       ) {
         // Validate and store the selected name
         if (step.validate(userAnswer)) {
-          console.log("Selected name:", step);
-
-          if (step.storeResult) step.storeResult(userAnswer, ctx);
+         if (step.storeResult) step.storeResult(userAnswer, ctx);
           ctx.state.steps =
             questionSets[ctx.state.selectedName.toLocaleLowerCase()] ||
             defaultSteps;
           ctx.state.name = ctx.state.selectedName;
           ctx.state.step = 0; // Start at the first question of the selected set
           ctx.state.awaitingAnswer = true;
-          console.log("Assigned steps:", ctx.state.steps);
-
           return [
             `Bienvenue ${ctx.state.name}!`,
             ...getQuestionLines(ctx.state.steps[ctx.state.step]),

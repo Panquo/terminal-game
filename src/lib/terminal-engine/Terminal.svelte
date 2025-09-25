@@ -8,7 +8,10 @@
   export let engine;
 
   let input = "";
-  let lines: (string | { type?: string; text: string; label?: string,status?:Status })[] = [];
+  let lines: (
+    | string
+    | { type?: string; text: string; label?: string; status?: Status }
+  )[] = [];
 
   // Initialize lines with intro if present, otherwise default
   const defaultLines = [
@@ -22,9 +25,7 @@
     if (lines.length === 0) {
       if (intro) {
         if (Array.isArray(intro)) {
-          lines = intro.map((line) =>
-            typeof line === "string" ? line : line
-          );
+          lines = intro.map((line) => (typeof line === "string" ? line : line));
         } else {
           lines = [intro];
         }
@@ -40,7 +41,9 @@
 
   let inputEl: HTMLInputElement;
 
-  function pushLines(newLines: (string | { type?: string; text: string; label?: string })[]) {
+  function pushLines(
+    newLines: (string | { type?: string; text: string; label?: string })[]
+  ) {
     lines = [...lines, ...newLines];
     // console.log("Pushing lines:", lines);
   }
@@ -75,11 +78,11 @@
         }
         input = commandHistory[historyIndex];
         // await tick();
-            setTimeout(() => {
-              if (inputEl) {
-                inputEl.setSelectionRange(input.length, input.length);
-              }
-            }, 0);
+        setTimeout(() => {
+          if (inputEl) {
+            inputEl.setSelectionRange(input.length, input.length);
+          }
+        }, 0);
       }
     } else if (event.key === "ArrowDown") {
       if (commandHistory.length > 0 && historyIndex !== -1) {
@@ -91,11 +94,11 @@
           input = "";
         }
         // await tick();
-            setTimeout(() => {
-              if (inputEl) {
-                inputEl.setSelectionRange(input.length, input.length);
-              }
-            }, 0);
+        setTimeout(() => {
+          if (inputEl) {
+            inputEl.setSelectionRange(input.length, input.length);
+          }
+        }, 0);
       }
     }
   }
@@ -103,12 +106,12 @@
   import { tick } from "svelte";
   function scrollToBottom() {
     const container = document.querySelector(".terminal");
-    if(!container) return; 
+    if (!container) return;
     container.scrollTop = container.scrollHeight;
   }
   $: if (lines) scrollToBottom();
 
-  function focusInputIfAllowed(event: MouseEvent) {
+  function focusInputIfAllowed(event: MouseEvent | KeyboardEvent) {
     const target = event.target as HTMLElement;
     // Avoid focusing if clicking on input, button, link, or inside .footer
     if (
@@ -124,7 +127,19 @@
   }
 
   // Update pushLinesWithDelay to set printing state
-  async function pushLinesWithDelay(linesToPrint: (string | { type?: string; text: string; label?: string; status?: string; delay?: number })[], defaultDelay = 500) {
+  async function pushLinesWithDelay(
+    linesToPrint: (
+      | string
+      | {
+          type?: string;
+          text: string;
+          label?: string;
+          status?: string;
+          delay?: number;
+        }
+    )[],
+    defaultDelay = 500
+  ) {
     printing = true;
     for (const line of linesToPrint) {
       if (typeof line === "string") {
@@ -138,7 +153,14 @@
         ]);
       }
       scrollToBottom();
-      await new Promise((res) => setTimeout(res, (typeof line === "object" && line.delay !== undefined) ? line.delay : defaultDelay));
+      await new Promise((res) =>
+        setTimeout(
+          res,
+          typeof line === "object" && line.delay !== undefined
+            ? line.delay
+            : defaultDelay
+        )
+      );
     }
     printing = false;
     await tick();
@@ -164,7 +186,12 @@
   }
 </script>
 
-<div class="terminal" on:click={focusInputIfAllowed}>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div
+  class="terminal"
+  on:click={focusInputIfAllowed}
+  on:keydown={focusInputIfAllowed}
+>
   <!-- Render lines -->
   {#each lines as line}
     {#if typeof line === "string"}
@@ -174,8 +201,15 @@
         <div class="line {status(line)}">{line}</div>
       {/if}
     {:else if line.type === "link"}
-      <div class="line {status(`[${formatDate(Date.now())}] [${line.status ?? 'INFO'}]`)}">
-        [{formatDate(Date.now())}] [{line.status ?? 'INFO'}] <a href={line.text} target="_blank">{line.label ? line.label : line.text}</a>
+      <div
+        class="line {status(
+          `[${formatDate(Date.now())}] [${line.status ?? 'INFO'}]`
+        )}"
+      >
+        [{formatDate(Date.now())}] [{line.status ?? "INFO"}]
+        <a href={line.text} target="_blank"
+          >{line.label ? line.label : line.text}</a
+        >
       </div>
     {:else}
       <div class="line">{line.text}</div>
@@ -220,7 +254,6 @@
   .info-tag {
     color: #4a94d5;
     font-weight: bold;
-    
   }
   .warn-tag {
     color: #f7d427;
