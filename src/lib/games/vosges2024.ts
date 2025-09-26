@@ -39,8 +39,13 @@ export function getVosges2024Context() {
     { text: "Finalizing file...", delay: 100 },
     { text: "File saved successfully!", delay: 100 },
     { text: "Here is your file :", delay: 100 },
-    { type: "link", text: "https://example.com", label: "Lien : https://example.com", delay: 100 },
-    { text: "Mot de passe : date de location au format ddmmYY", delay: 100 },
+    {
+      type: "link",
+      text: "https://example.com",
+      label: "Lien : https://nextcloud.bypanquo.one/s/z3tkDN5gKbCdxtj",
+      delay: 100,
+    },
+    { text: "Mot de passe : A demander à l'auteur", delay: 100 },
   ];
 
   let steps = [
