@@ -29,23 +29,23 @@ export function getVosges2024Context() {
     { text: "Awaiting to start the process...", delay: 1000 },
   ];
   const outro = [
-    { text: "Processing answers...", delay: 1000 },
-    { text: "Loading bits...", delay: 100 },
-    { text: "Filling memory leaks...", delay: 100 },
-    { text: "Finalising recovery...", delay: 1000 },
-    { text: "Memory recovery complete!", delay: 100 },
-    { text: "Packing memory...", delay: 500 },
-    { text: "Compressing data...", delay: 200 },
-    { text: "Finalizing file...", delay: 100 },
-    { text: "File saved successfully!", delay: 100 },
-    { text: "Here is your file :", delay: 100 },
+    { text: "Chargement des partitions...", delay: 100 },
+    { text: "Bouchage des fuites mémoire...", delay: 100 },
+    { text: "Finalisation de la récupération...", delay: 1000 },
+    { text: "Récupération mémoire terminée!", delay: 100 },
+    { text: "Emballage de la mémoire...", delay: 500 },
+    { text: "Compression des données...", delay: 200 },
+    { text: "Finalisation du fichier...", delay: 100 },
+    { text: "Fichier sauvegardé avec succès !", delay: 100 },
+    { text: "Voici votre fichier :", delay: 100 },
     {
       type: "link",
-      text: "https://example.com",
+      text: "https://nextcloud.bypanquo.one/s/z3tkDN5gKbCdxtj",
       label: "Lien : https://nextcloud.bypanquo.one/s/z3tkDN5gKbCdxtj",
       delay: 100,
     },
     { text: "Mot de passe : A demander à l'auteur", delay: 100 },
+    { text: "(Next time use the command 'bypass' to access the link directly)", delay: 100,status: Status.ERROR },
   ];
 
   let steps = [
