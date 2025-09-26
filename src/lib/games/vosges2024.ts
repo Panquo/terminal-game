@@ -2056,7 +2056,7 @@ export function getVosges2024Context() {
     description: "Check progress",
     run: (_, ctx) => {
       if (!ctx.state.started) return ["Recovery not started. Type 'start'."];
-      const lines = [`Current step: ${ctx.state.step + 1} / ${steps.length}`];
+      const lines = [];
       if (ctx.state.awaitingAnswer) {
         lines.push("En attente d'assistance.");
         lines.push(...getQuestionLines(steps[ctx.state.step]));
